@@ -10,12 +10,13 @@ import {
 import {
     ForwardRefExoticComponent, RefAttributes, useEffect, useState
 } from "react"
-import { Card } from "./ui/card"
 import { twMerge } from "tailwind-merge"
-import { Button } from "./ui/button"
 import { useRouter } from "next/navigation"
 import { useDifficulty } from "@/context/difficulty-context"
+import { Card } from "./ui/card"
+import { Button } from "./ui/button"
 import { CardPiece } from "./card-piece"
+import { motion } from "framer-motion"
 
 export interface Couple {
     object: PieceProps
@@ -174,7 +175,7 @@ export const Game = () => {
                 className="w-full min-h-[calc(100vh-80px)] flex items-center justify-center"
             >
                 <Card className={twMerge(
-                    "min-h-1/2 grid  gap-3 border-none",
+                    "min-h-1/2 grid gap-3 border-none",
                     difficulty === "easy"
                         ? "grid-cols-2"
                         : difficulty === "mid"
