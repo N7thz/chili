@@ -85,8 +85,6 @@
 
 .flip-card-inner {
   position: relative;
-  width: 100%;
-  height: 100%;
   transition: transform 1s;
   transform-style: preserve-3d;
 }
@@ -94,7 +92,12 @@
 .flip-card-front,
 .flip-card-back {
   position: absolute;
+  inset: 0px;
   backface-visibility: hidden;
+}
+
+.flip-card-back {
+  left: -15px
 }
 
 @layer base {

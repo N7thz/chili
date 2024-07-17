@@ -18,9 +18,15 @@ export const DifficultyButton = () => {
             <DropdownMenuTrigger asChild>
                 <Button
                     variant="outline"
-                    className="w-full"
+                    className="w-full capitalize"
                 >
-                    <h1>Dificuldade</h1>
+                    {
+                        difficulty === "easy"
+                            ? "fácil"
+                            : difficulty === "hard"
+                                ? "difícil"
+                                : "médio"
+                    }
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="center">

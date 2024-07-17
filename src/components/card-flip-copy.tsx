@@ -1,10 +1,10 @@
 import { useState } from "react"
-import { twMerge } from "tailwind-merge"
-import { Card } from "./ui/card"
 import { CardFlipProps, PieceProps } from "@/@types"
-import { Animation } from "./animation"
 import { useDifficulty } from "@/context/difficulty-context"
 import { Swords } from "lucide-react"
+import { twMerge } from "tailwind-merge"
+import { Card } from "./ui/card"
+import { Animation } from "./animation"
 
 export const CardFlip = ({
     firstItem, setFirstItem,
@@ -17,10 +17,6 @@ export const CardFlip = ({
     const [flip, setFlip] = useState<boolean>(false)
 
     const { difficulty, setIsRunning, isRunning } = useDifficulty()
-
-    console.log(errorCouple)
-
-    console.log(firstItem)
 
     function validateCouple(couple: PieceProps) {
 
@@ -61,6 +57,8 @@ export const CardFlip = ({
         }
     }
 
+    console.log(flip)
+
     return (
         <Animation
             initial={{ opacity: 0, scale: 0 }}
@@ -70,18 +68,12 @@ export const CardFlip = ({
             className={twMerge(difficulty === "easy" && "m-2")}
         >
             <div
-                className={twMerge(
-                    "flip-card flip-horizontal-left",
-                    (!errorCouple || (!firstItem || !secondItem)) &&
-                    flip &&
-                    "flip-horizontal-left-hover"
-                )}
+                className="w-full flex items-center justify-center"
                 onClick={() => validateCouple(couple)}
             >
-                <div className="flip-card-inner">
-                    <FrontCard />
-                    <BackCard couple={couple} />
-                </div>
+                {
+                    !flip ? <FrontCard /> : <BackCard couple={couple} />
+                }
             </div>
         </Animation>
     )
@@ -93,7 +85,7 @@ const FrontCard = () => {
 
     return (
         <Card className={twMerge(
-            "flex items-center justify-center p-2 border border-primary flip-card-front",
+            "flex items-center justify-center p-2 border border-primary",
             difficulty === "easy" && "size-24",
             (
                 difficulty === "mid" || difficulty === "hard"
@@ -116,7 +108,7 @@ const BackCard = ({ couple }: { couple: PieceProps }) => {
 
     return (
         <Card className={twMerge(
-            "flex items-center justify-center p-2 border border-primary flip-card-back",
+            "flex items-center justify-center p-2 border border-primary",
             difficulty === "easy" && "size-24",
             (
                 difficulty === "mid" || difficulty === "hard"

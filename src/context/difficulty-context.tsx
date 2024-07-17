@@ -1,6 +1,6 @@
 "use client"
 
-import { CookieValueTypes, getCookie } from "cookies-next"
+import { getCookie } from "cookies-next"
 import {
     Dispatch,
     ReactNode,
@@ -11,20 +11,24 @@ import {
 } from "react"
 
 interface DifficultyContextProps {
-    difficulty: CookieValueTypes
-    setDifficulty: Dispatch<SetStateAction<CookieValueTypes>>
+    difficulty: string
+    setDifficulty: Dispatch<SetStateAction<string>>
+    isRunning: boolean
+    setIsRunning: Dispatch<SetStateAction<boolean>>
 }
 
 const DifficultyContext = createContext({} as DifficultyContextProps)
 
 export function DifficultyProvider({ children }: { children: ReactNode }) {
 
-    const cookies = getCookie("difficulty")
+    const cookies = getCookie("difficulty") ?? "mid"
 
-    const [difficulty, setDifficulty] = useState<CookieValueTypes>(cookies)
+    const [difficulty, setDifficulty] = useState<string>(cookies)
+    const [isRunning, setIsRunning] = useState<boolean>(false)
 
     const value: DifficultyContextProps = {
-        difficulty, setDifficulty
+        difficulty, setDifficulty,
+        isRunning, setIsRunning
     }
 
     return (

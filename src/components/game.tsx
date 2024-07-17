@@ -1,34 +1,19 @@
 "use client"
 
-import { setCookie } from "cookies-next"
-import { uuid as randomID } from 'uuidv4'
 import {
-    Bird, Bone, Bug, Cat, Dog, PawPrint, Apple, Banana, Beef, Beer, Carrot, Cookie, Croissant, CupSoda, Drumstick, Egg, Ham, IceCreamCone, Martini, Pizza, Popcorn, Popsicle, Utensils, Crown, Dice6, Flame, FlaskConical, Gamepad, Ghost, Gift, Headphones, Heart,
-    LucideProps,
-    ArrowLeft
-} from "lucide-react"
-import {
-    ForwardRefExoticComponent, RefAttributes, useEffect, useState
+    useEffect, useState
 } from "react"
+import { uuid as randomID } from 'uuidv4'
+import { ArrowLeft } from "lucide-react"
 import { twMerge } from "tailwind-merge"
 import { useRouter } from "next/navigation"
 import { useDifficulty } from "@/context/difficulty-context"
 import { Card } from "./ui/card"
 import { Button } from "./ui/button"
 import { CardPiece } from "./card-piece"
-import { motion } from "framer-motion"
-
-export interface Couple {
-    object: PieceProps
-    pair: PieceProps
-}
-
-export interface PieceProps {
-    id: string,
-    Icon: ForwardRefExoticComponent<
-        Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
-    >
-}
+import { pieces } from "@/lib/icons"
+import { Timer } from "./timer"
+import { PieceProps, Couple } from "@/@types"
 
 export const Game = () => {
 
@@ -37,23 +22,9 @@ export const Game = () => {
     const { difficulty, setDifficulty } = useDifficulty()
     const { push } = useRouter()
 
-    if (difficulty === undefined) {
-        setDifficulty("mid")
-        setCookie("difficulty", "mid")
-    }
+    console.log(difficulty)
 
     function generateCouples() {
-
-        const pieces = [
-            Bird, Bone, Bug, Cat,
-            Dog, PawPrint, Apple, Banana,
-            Beef, Beer, Carrot, Cookie,
-            Croissant, CupSoda, Drumstick, Egg,
-            Ham, IceCreamCone, Martini, Pizza,
-            Popcorn, Popsicle, Utensils, Crown,
-            Dice6, Flame, FlaskConical, Gamepad,
-            Ghost, Gift, Headphones, Heart
-        ]
 
         if (difficulty === "easy") {
 
@@ -97,7 +68,7 @@ export const Game = () => {
             return intervalObject
         } else {
 
-            const intervalObject = pieces.map(piece => {
+            const piecesInterval = pieces.map(piece => {
 
                 const object: PieceProps = {
                     id: randomID(),
@@ -112,7 +83,7 @@ export const Game = () => {
                 return { object, pair }
             })
 
-            return intervalObject
+            return piecesInterval
         }
     }
 
@@ -156,31 +127,44 @@ export const Game = () => {
     }, [])
 
     return (
-        <div className="min-h-screen flex flex-col justify-between">
-            <header className="w-full p-4 flex">
-                <div className="w-1/2 flex justify-between items-center">
-                    <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => push("/")}
-                    >
-                        <ArrowLeft />
-                    </Button>
-                    <Card className="border-border p-2 text-2xl">
-                        0:00
-                    </Card>
-                </div>
+        <div
+            className="min-h-screen flex flex-col justify-between bg-background-image"
+        >
+            <header
+                className="w-full flex p-2 items-center justify-between relative"
+            >
+                <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => push("/")}
+                    className="border-none"
+                >
+                    <ArrowLeft />
+                </Button>
+                <Timer />
+                <Card className="border-border p-2 text-2xl border-none">
+                    Dificuldade:
+                    <span className="ml-2 capitalize">
+                        {/* {
+                            difficulty === "easy"
+                                ? "fácil"
+                                : difficulty === "hard"
+                                    ? "difícil"
+                                    : "medio"
+                        } */}
+                    </span>
+                </Card>
             </header>
             <main
-                className="w-full min-h-[calc(100vh-80px)] flex items-center justify-center"
+                className="w-full min-h-[calc(100vh-80px)] flex items-center justify-center mt-4"
             >
                 <Card className={twMerge(
-                    "min-h-1/2 grid gap-3 border-none",
+                    "grid gap-3 p-2 justify-center place-items-center",
                     difficulty === "easy"
-                        ? "grid-cols-2"
+                        ? "grid-cols-2 w-1/3"
                         : difficulty === "mid"
-                            ? "grid-cols-4"
-                            : "grid-cols-8"
+                            ? "grid-cols-4 w-5/12"
+                            : "grid-cols-8 w-11/12"
                 )}>
                     <CardPiece coupleArray={coupleArray} />
                 </Card>
